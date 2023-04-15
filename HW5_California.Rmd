@@ -1,0 +1,36 @@
+---
+title: "HW5_California"
+author: "Alizia Hamilton"
+date: "2023-04-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+# Load required packages
+library(ggplot2)
+library(mapdata)
+
+# Load data
+load("C:/Users/Hamil/OneDrive/Desktop/wind_turbines.rda")
+
+# Subset data to include only California
+wind_ca <- subset(wind_turbines, t_state == "CA")
+California <- map_data("state") %>% 
+  filter(region == "california")
+
+# Create plot
+ggplot() +
+  geom_polygon(data = California, aes(x = long, y = lat, group = group), 
+               fill = "blue", color = "black") +
+  geom_point(data = wind_ca, aes(x = xlong, y = ylat, size = t_cap), 
+             color = "red") +
+  guides(fill = "none") +
+  labs(title = "California Wind Turbines",
+       x = "Longitude",
+       y = "Latitude",
+       size = "Capacity (MW)")
